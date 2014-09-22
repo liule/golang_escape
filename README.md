@@ -1,3 +1,3 @@
-golang版本的mysql_escape_string()
+golang鐗堟湰鐨刴ysql_escape_string()
 
-参考了mysql的C版本api
+鍙傝�冧簡mysql鐨凜鐗堟湰api
