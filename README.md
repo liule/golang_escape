@@ -1,0 +1,3 @@
+golang版本的mysql_escape_string()
+
+参考了mysql的C版本api
