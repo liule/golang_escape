@@ -1,61 +1,40 @@
-package main
+package mysql_escape
 
-import (
-	"errors"
-	"fmt"
-)
-
-func mysql_escape(source string) (string, error) {
-	var j int = 0
+func MysqlEscapeString(source string) string {
 	if len(source) == 0 {
-		return "", errors.New("source is null")
+		return ""
 	}
 	tempStr := source[:]
+
+	var j int = 0
 	desc := make([]byte, len(tempStr)*2)
 	for i := 0; i < len(tempStr); i++ {
-		flag := false
 		var escape byte
+		escape = 0
 		switch tempStr[i] {
+		case 0:
+			escape = '0'
 		case '\r':
-			flag = true
-			escape = '\r'
-			break
+			escape = 'r'
 		case '\n':
-			flag = true
-			escape = '\n'
-			break
+			escape = 'n'
 		case '\\':
-			flag = true
 			escape = '\\'
-			break
 		case '\'':
-			flag = true
 			escape = '\''
-			break
 		case '"':
-			flag = true
 			escape = '"'
-			break
 		case '\032':
-			flag = true
 			escape = 'Z'
-			break
-		default:
 		}
-		if flag {
+		if escape != 0 {
 			desc[j] = '\\'
 			desc[j+1] = escape
-			j = j + 2
+			j += 2
 		} else {
 			desc[j] = tempStr[i]
-			j = j + 1
+			j += 1
 		}
 	}
-	return string(desc[0:j]), nil
-}
-
-func main() {
-	if str, err := mysql_escape(`SELECT * FROM users WHERE user=20 AND password='%s'`); err == nil {
-		fmt.Println(str)
-	}
+	return string(desc[0:j])
 }
